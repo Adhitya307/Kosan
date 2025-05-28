@@ -18,6 +18,9 @@
     </div>
 
     <div class="user-info">
+        <div class="avatar">
+            <?= strtoupper(substr($user['nama'] ?? 'U', 0, 1)) ?>
+        </div>
         <span class="username"><?= esc($user['nama'] ?? 'Pengguna') ?></span>
         <a href="<?= base_url('logout') ?>" class="logout-btn">
             <i class="fas fa-sign-out-alt"></i> Logout

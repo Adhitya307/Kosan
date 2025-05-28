@@ -21,9 +21,10 @@ class BookingController extends BaseController
     {
         $kamar = $this->kamarModel->find($id_kamar);
 
-        if (!$kamar || $kamar['status_kamar'] !== 'Tersedia') {
-            return redirect()->back()->with('error', 'Kamar tidak tersedia untuk dipesan.');
-        }
+if (!$kamar || strtolower($kamar['status_kamar']) !== 'tersedia') {
+    return redirect()->back()->with('error', 'Kamar tidak tersedia untuk dipesan.');
+}
+
 
         $data = [
             'title' => 'Konfirmasi Booking Kamar',
