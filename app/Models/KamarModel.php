@@ -6,43 +6,44 @@ use CodeIgniter\Model;
 
 class KamarModel extends Model
 {
-    protected $table      = 'kamar';
-    protected $primaryKey = 'id';
-
-    // Daftar field yang bisa di-insert/update
-    protected $allowedFields = ['nama_kamar', 'status', 'harga', 'deskripsi', 'gambar'];
-
-    // Validasi data
-    protected $validationRules = [
-        'nama_kamar' => 'required|min_length[3]|max_length[255]',
-        'status'     => 'required|in_list[tersedia,terisi]',
-        'harga'      => 'required|numeric',
-        'deskripsi'  => 'permit_empty|string',
-        'gambar'     => 'permit_empty|valid_image'
+    protected $table = 'kamar';
+    protected $primaryKey = 'id_kamar';
+    protected $allowedFields = [
+        'nomor_kamar', 'harga_kamar', 'fasilitas', 'status_kamar', 'foto'
     ];
-
-    // Pesan error untuk validasi
-    protected $validationMessages = [
-        'nama_kamar' => [
-            'required' => 'Nama kamar harus diisi.',
-            'min_length' => 'Nama kamar minimal 3 karakter.',
-            'max_length' => 'Nama kamar maksimal 255 karakter.',
-        ],
-        'status' => [
-            'required' => 'Status kamar harus dipilih.',
-            'in_list' => 'Status kamar harus salah satu dari: tersedia, terisi.',
-        ],
-        'harga' => [
-            'required' => 'Harga kamar harus diisi.',
-            'numeric' => 'Harga kamar harus berupa angka.',
-        ],
-        'gambar' => [
-            'valid_image' => 'Gambar harus berupa file gambar yang valid.',
-        ],
-    ];
-
-    // Timestamps (untuk created_at dan updated_at)
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+
+    protected $validationRules = [
+        'id_kamar' => 'permit_empty|integer',
+        'nomor_kamar' => 'required', // is_unique di-handle di controller untuk update
+        'harga_kamar' => 'required|numeric|greater_than[0]',
+        'status_kamar' => 'required|in_list[tersedia,dipesan,ditempati,maintenance]',
+        'foto' => 'permit_empty'
+    ];
+
+    protected $validationMessages = [
+        'nomor_kamar' => [
+            'required' => 'Nomor kamar wajib diisi.',
+            // 'is_unique' => 'Nomor kamar sudah terdaftar.'  <-- pindahkan ke controller
+        ],
+        'harga_kamar' => [
+            'required' => 'Harga kamar wajib diisi.',
+            'numeric' => 'Harga harus berupa angka.',
+            'greater_than' => 'Harga harus lebih dari 0.'
+        ],
+        'fasilitas' => [
+            'in_list' => 'Fasilitas tidak valid.'
+        ],
+        'status_kamar' => [
+            'required' => 'Status kamar harus dipilih.',
+            'in_list' => 'Status tidak valid.'
+        ],
+        'foto' => [
+            'is_image' => 'File harus berupa gambar.',
+            'mime_in' => 'Tipe gambar tidak diperbolehkan.',
+            'max_size' => 'Ukuran gambar maksimal 2MB.'
+        ]
+    ];
 }

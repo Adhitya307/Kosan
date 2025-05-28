@@ -28,3 +28,27 @@ $routes->get('/forgot-password', 'Auth::forgotPasswordForm');
 $routes->post('/forgot-password', 'Auth::sendResetToken');
 $routes->get('/reset-password', 'Auth::resetPasswordForm');
 $routes->post('/reset-password', 'Auth::updatePasswordFromToken');
+
+$routes->get('customer', 'Customer::index');
+$routes->get('customer/tambah', 'Customer::create');    // ganti create jadi tambah
+$routes->post('customer/store', 'Customer::store');
+$routes->get('customer/edit/(:segment)', 'Customer::edit/$1');
+$routes->post('customer/update/(:segment)', 'Customer::update/$1');
+$routes->get('customer/delete/(:segment)', 'Customer::delete/$1');
+
+$routes->get('/kamar', 'Kamar::index');
+$routes->get('/kamar/create', 'Kamar::create');
+$routes->post('/kamar/store', 'Kamar::store');
+$routes->get('/kamar/edit/(:num)', 'Kamar::edit/$1');
+$routes->post('/kamar/update/(:num)', 'Kamar::update/$1');
+$routes->post('/kamar/delete/(:num)', 'Kamar::delete/$1');
+$routes->put('kamar/update/(:num)', 'Kamar::update/$1');
+
+$routes->get('booking/(:num)', 'BookingController::index/$1');    // Menampilkan form booking
+$routes->post('booking/process', 'BookingController::process');  // Proses booking
+$routes->get('booking/success/(:num)', 'BookingController::success/$1');  // Halaman sukses
+
+$routes->get('booking/kelolaboking', 'BookingController::kelolabooking');
+$routes->post('booking/updateStatus', 'BookingController::updateStatus');
+
+$routes->get('informasi_booking', 'BookingController::informasiBooking');

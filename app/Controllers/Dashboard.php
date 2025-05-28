@@ -30,7 +30,7 @@ class Dashboard extends BaseController
         // Jika role customer, ambil data kamar
         if ($role === 'customer') {
             $kamarModel = new KamarModel();
-            $data['kamar'] = $kamarModel->where('status', 'tersedia')->findAll();
+            $data['kamar'] = $kamarModel->where('status_kamar', 'tersedia')->findAll();
         }
 
         return view('dashboard', $data);

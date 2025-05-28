@@ -1,105 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <style>
-        body { font-family: sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
-        h1 { text-align: center; padding-top: 30px; }
-        .menu-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-top: 50px;
-        }
-        .menu-item {
-            width: 120px;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: 0.3s;
-            background: #fff;
-            text-decoration: none;
-            color: #333;
-        }
-        .menu-item:hover {
-            background: #e0e0e0;
-        }
-        .menu-item img {
-            width: 64px;
-            height: 64px;
-        }
-        .kamar-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .kamar-item {
-            background: #fff;
-            border-radius: 12px;
-            padding: 20px;
-            width: 200px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .kamar-item h4 {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
-        .kamar-item p {
-            margin: 5px 0;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard - Sistem Kosan</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="<?= base_url('/css/dashboard.css') ?>" />
+    <!-- Jangan pakai link untuk JS -->
 </head>
 <body>
 
-<h1>Dashboard</h1>
+<header>
+    <div class="logo">
+        <img src="<?= base_url('icons/kosan.png') ?>" alt="Logo Kosan" />
+        <h2>Sistem Kosan</h2>
+    </div>
 
+    <div class="user-info">
+        <span class="username"><?= esc($user['nama'] ?? 'Pengguna') ?></span>
+        <a href="<?= base_url('logout') ?>" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+</header>
+
+<div class="main-container">
+    <?php if ($role === 'admin'): ?>
+        <h2 class="section-title">Menu Administrasi</h2>
+        <div class="menu-wrapper">
+            <div class="menu-container">
+                <a href="<?= base_url('booking/kelolaboking') ?>" class="menu-item">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>Data Booking</h3>
+                    <p>Kelola Booking penyewaan</p>
+                </a>
+                <a href="<?= base_url('admin') ?>" class="menu-item">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Data Admin</h3>
+                    <p>Kelola administrator sistem</p>
+                </a>
+                <a href="<?= base_url('customer') ?>" class="menu-item">
+                    <i class="fas fa-users"></i>
+                    <h3>Data Customer</h3>
+                    <p>Kelola data pelanggan</p>
+                </a>
+                <a href="<?= base_url('kamar') ?>" class="menu-item">
+                    <i class="fas fa-bed"></i>
+                    <h3>Data Kamar</h3>
+                    <p>Kelola kamar kos</p>
+                </a>
+            </div>
+        </div>
+    <?php elseif ($role === 'customer'): ?>
+        <nav class="customer-navbar">
+            <div class="container">
+                <a href="<?= base_url('informasi_booking') ?>" class="btn-booked">
+                    <i class="fas fa-bookmark"></i> Booked
+                </a>
+            </div>
+        </nav>
+
+        <h2 class="section-title">Kamar Tersedia</h2>
+        <div class="kamar-list">
+            <?php if (!empty($kamar)) : ?>
+                <?php foreach ($kamar as $k) : ?>
+                    <div class="kamar-item">
 <?php
-$role = session()->get('user')['role']; // Ambil role dari session
+$fotos = json_decode($k['foto'], true);
+if (is_array($fotos) && count($fotos) > 0):
+    $foto_pertama = $fotos[0];
 ?>
-
-<?php if ($role === 'admin'): ?>
-    <div class="menu-container">
-        <a href="<?= base_url('transaksi') ?>" class="menu-item">
-            <img src="<?= base_url('icons/data_transaksi.png') ?>" alt="Data Transaksi">
-            <p>Data Transaksi</p>
-        </a>
-        <a href="<?= base_url('admin') ?>" class="menu-item">
-            <img src="<?= base_url('icons/data_admin.png') ?>" alt="Data Admin">
-            <p>Data Admin</p>
-        </a>
-        <a href="<?= base_url('customer') ?>" class="menu-item">
-            <img src="<?= base_url('icons/data_customer.png') ?>" alt="Data Customer">
-            <p>Data Customer</p>
-        </a>
-        <a href="<?= base_url('kamar') ?>" class="menu-item">
-            <img src="<?= base_url('icons/data_kamar.png') ?>" alt="Data Kamar">
-            <p>Data Kamar</p>
-        </a>
-    </div>
-
-<?php elseif ($role === 'customer'): ?>
-    <h2 style="text-align:center;">Kamar Tersedia</h2>
-    <div class="kamar-list">
-        <?php if (!empty($kamar)) : ?>
-            <?php foreach ($kamar as $k) : ?>
-                <div class="kamar-item">
-                    <h4><?= esc($k['nama_kamar']) ?></h4>
-                    <p>Harga: Rp<?= number_format($k['harga'], 0, ',', '.') ?></p>
-                    <p>Status: <?= esc($k['status']) ?></p>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p style="text-align:center;">Tidak ada kamar tersedia.</p>
-        <?php endif; ?>
-    </div>
+    <img src="<?= base_url('uploads/kamar/' . $foto_pertama) ?>" alt="Foto Kamar" class="kamar-img" />
+<?php else: ?>
+    <img src="https://via.placeholder.com/400x300?text=Kamar+Kosan" alt="Foto Kamar" class="kamar-img" />
 <?php endif; ?>
+
+
+                        <div class="kamar-details">
+                            <h4>Kamar <?= esc($k['nomor_kamar']) ?></h4>
+                            <div class="kamar-meta">
+                                <span class="kamar-price">Rp<?= number_format($k['harga_kamar'], 0, ',', '.') ?>/bulan</span>
+                                <span class="kamar-status <?= $k['status_kamar'] === 'tersedia' ? 'status-available' : 'status-booked' ?>">
+                                    <?= esc($k['status_kamar']) ?>
+                                </span>
+                            </div>
+                            <a href="<?= base_url('booking/' . $k['id_kamar']) ?>" class="book-btn">
+                                <i class="fas fa-calendar-check"></i> Pesan Sekarang
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="no-rooms">Tidak ada kamar tersedia saat ini.</p>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+</div>
+
+<!-- Letakkan script JS di bawah sebelum penutup body -->
+<script src="<?= base_url('js/dashboard.js') ?>"></script>
 
 </body>
 </html>
