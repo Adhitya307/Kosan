@@ -25,8 +25,15 @@
     <form action="<?= base_url('kamar/store'); ?>" method="post" enctype="multipart/form-data">
         <?= csrf_field(); ?>
         <?= $this->include('kamar/_formkamar'); ?>
-        <button type="submit" class="btn btn-success">Simpan</button>
-        <a href="<?= base_url('kamar'); ?>" class="btn btn-secondary">Kembali</a>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="<?= base_url('kamar'); ?>" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Kembali
+            </a>
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save me-1"></i> Simpan
+            </button>
+        </div>
     </form>
 </div>
 

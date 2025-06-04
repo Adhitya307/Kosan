@@ -1,21 +1,24 @@
 <?= $this->extend('layouts/main'); ?>
 <?= $this->section('content'); ?>
 
+<!-- Load the CSS file -->
+<link rel="stylesheet" href="<?= base_url('/css/kamar.css'); ?>">
+
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">Daftar Kamar Kos</h2>
-        <div>
-            <a href="<?= site_url('kamar/create'); ?>" class="btn btn-primary">
+    <div class="header-container">
+        <h2>Daftar Kamar Kos</h2>
+        <div class="action-buttons">
+            <a href="<?= site_url('kamar/create'); ?>" class="btn btn-add">
                 <i class="fas fa-plus-circle"></i> Tambah Kamar
             </a>
-            <a href="<?= site_url('dashboard'); ?>" class="btn btn-outline-secondary">
+            <a href="<?= site_url('dashboard'); ?>" class="btn btn-back">
                 <i class="fas fa-arrow-left"></i> Kembali
             </a>
         </div>
     </div>
 
     <?php if (session()->getFlashdata('message')): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show flash-message" role="alert">
             <?= session()->getFlashdata('message'); ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -24,8 +27,8 @@
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
+                <table class="table kamar-table">
+                    <thead>
                         <tr>
                             <th width="50">No</th>
                             <th>Nomor Kamar</th>
@@ -39,46 +42,45 @@
                     <tbody>
                         <?php foreach ($kamar as $i => $k): ?>
                             <tr>
-                                <td><?= $i + 1; ?></td>
-                                <td class="fw-bold"><?= esc($k['nomor_kamar']); ?></td>
-                                <td>Rp<?= number_format($k['harga_kamar'], 0, ',', '.'); ?></td>
-                                <td>
-                                    <div class="d-flex flex-wrap gap-1">
+                                <td class="serial-number"><?= $i + 1; ?></td>
+                                <td class="room-number"><?= esc($k['nomor_kamar']); ?></td>
+                                <td class="room-price">Rp<?= number_format($k['harga_kamar'], 0, ',', '.'); ?></td>
+                                <td class="room-facilities">
+                                    <div class="facilities-container">
                                         <?php 
                                         $fasilitas = explode(',', $k['fasilitas']);
                                         foreach ($fasilitas as $f): 
                                         ?>
-                                            <span class="badge bg-light text-dark border"><?= trim($f) ?></span>
+                                            <span class="facility-badge"><?= trim($f) ?></span>
                                         <?php endforeach; ?>
                                     </div>
                                 </td>
-                                <td>
-                                    <span class="badge <?= $k['status_kamar'] === 'tersedia' ? 'bg-success' : 'bg-secondary' ?>">
+                                <td class="room-status">
+                                    <span class="status-badge <?= $k['status_kamar'] === 'tersedia' ? 'available' : 'occupied' ?>">
                                         <?= ucfirst($k['status_kamar']); ?>
                                     </span>
                                 </td>
-<td>
-    <?php 
-    $fotos = json_decode($k['foto'], true);
-    if (is_array($fotos) && count($fotos) > 0): ?>
-        <div class="d-flex flex-wrap gap-1">
-            <?php foreach ($fotos as $foto): ?>
-                <img src="<?= base_url('uploads/kamar/' . $foto); ?>" class="rounded" width="80" height="60" style="object-fit: cover;">
-            <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <span class="text-muted">Tidak ada</span>
-    <?php endif; ?>
-</td>
-
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="<?= site_url('kamar/edit/' . $k['id_kamar']); ?>" class="btn btn-sm btn-outline-primary" title="Edit">
+                                <td class="room-photos">
+                                    <?php 
+                                    $fotos = json_decode($k['foto'], true);
+                                    if (is_array($fotos) && count($fotos) > 0): ?>
+                                        <div class="photos-container">
+                                            <?php foreach ($fotos as $foto): ?>
+                                                <img src="<?= base_url('uploads/kamar/' . $foto); ?>" class="room-photo" alt="Kamar <?= esc($k['nomor_kamar']); ?>">
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <span class="no-photo">Tidak ada</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="action-buttons">
+                                    <div class="btn-group">
+                                        <a href="<?= site_url('kamar/edit/' . $k['id_kamar']); ?>" class="btn btn-edit" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="<?= site_url('kamar/delete/' . $k['id_kamar']); ?>" method="post" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kamar ini?');">
+                                        <form action="<?= site_url('kamar/delete/' . $k['id_kamar']); ?>" method="post" class="delete-form" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kamar ini?');">
                                             <?= csrf_field(); ?>
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus">
+                                            <button type="submit" class="btn btn-delete" title="Hapus">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -93,58 +95,14 @@
     </div>
 
     <?php if (empty($kamar)): ?>
-        <div class="text-center py-5">
-            <img src="<?= base_url('assets/img/empty.svg'); ?>" alt="Empty" width="200" class="mb-3">
-            <h5 class="text-muted">Belum ada data kamar</h5>
-            <a href="<?= site_url('kamar/create'); ?>" class="btn btn-primary mt-3">
+        <div class="empty-state">
+            <img src="<?= base_url('assets/img/empty.svg'); ?>" alt="Empty" class="empty-image">
+            <h5>Belum ada data kamar</h5>
+            <a href="<?= site_url('kamar/create'); ?>" class="btn btn-add">
                 <i class="fas fa-plus-circle"></i> Tambah Kamar Pertama
             </a>
         </div>
     <?php endif; ?>
 </div>
-
-<style>
-    .table th {
-        white-space: nowrap;
-    }
-    .badge {
-        font-weight: 500;
-    }
-    .card {
-        border-radius: 10px;
-        border: none;
-    }
-    .table {
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    .table thead th {
-        border-bottom: none;
-        padding: 12px 16px;
-    }
-    .table tbody td {
-        padding: 12px 16px;
-        vertical-align: middle;
-    }
-    .table-hover tbody tr:hover {
-        background-color: rgba(67, 97, 238, 0.05);
-    }
-    .btn-outline-primary {
-        border-color: #4361ee;
-        color: #4361ee;
-    }
-    .btn-outline-primary:hover {
-        background-color: #4361ee;
-        color: white;
-    }
-    .btn-outline-danger {
-        border-color: #f72585;
-        color: #f72585;
-    }
-    .btn-outline-danger:hover {
-        background-color: #f72585;
-        color: white;
-    }
-</style>
 
 <?= $this->endSection(); ?>

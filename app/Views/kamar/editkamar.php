@@ -26,8 +26,15 @@
         <?= csrf_field(); ?>
         <input type="hidden" name="_method" value="PUT">
         <?= $this->include('kamar/_formkamar'); ?>
-        <button type="submit" class="btn btn-primary">Update</button>
-        <a href="<?= base_url('kamar'); ?>" class="btn btn-secondary">Kembali</a>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="<?= base_url('kamar'); ?>" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Kembali
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i> Update
+            </button>
+        </div>
     </form>
 </div>
 
