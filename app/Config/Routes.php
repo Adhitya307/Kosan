@@ -52,3 +52,10 @@ $routes->get('booking/kelolaboking', 'BookingController::kelolabooking');
 $routes->post('booking/updateStatus', 'BookingController::updateStatus');
 
 $routes->get('informasi_booking', 'BookingController::informasiBooking');
+
+// Transaksi Pembayaran
+$routes->get('transaksi/create/(:num)', 'TransaksiController::create/$1');
+$routes->post('transaksi/store', 'TransaksiController::store');
+$routes->get('transaksi/sukses', 'TransaksiController::sukses');
+
+$routes->post('transaksi/upload_bukti', 'TransaksiController::upload_bukti');

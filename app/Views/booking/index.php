@@ -84,21 +84,48 @@
                     </div>
                 </div>
 
-                <form action="<?= base_url('booking/process') ?>" method="post">
-                    <input type="hidden" name="id_kamar" value="<?= $kamar['id_kamar'] ?>">
-                    
-                    <h5 class="fw-bold mb-3"><i class="fas fa-user-edit text-primary me-2"></i>Data Pemesan</h5>
-                    
-                    <div class="mb-4">
-                        <label for="nama" class="form-label fw-medium">Nama Lengkap</label>
-                        <input type="text" class="form-control" id="nama" name="nama" 
-                               value="<?= old('nama') ?? (session()->get('user')['nama'] ?? '') ?>" required>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-booking w-100 mt-3">
-                        <i class="fas fa-check-circle me-2"></i>Konfirmasi Booking
-                    </button>
-                </form>
+                <form action="<?= base_url('booking/process') ?>" method="post" enctype="multipart/form-data">
+    <?= csrf_field() ?>
+    <input type="hidden" name="id_kamar" value="<?= esc($kamar['id_kamar']) ?>">
+
+    <!-- Data Pemesan -->
+    <h5 class="fw-bold mb-3"><i class="fas fa-user-edit text-primary me-2"></i>Data Pemesan</h5>
+
+    <div class="mb-4">
+        <label for="nama" class="form-label fw-medium">Nama Lengkap</label>
+        <input type="text" class="form-control" id="nama" name="nama"
+               value="<?= old('nama') ?? (session()->get('user')['nama'] ?? '') ?>" required>
+    </div>
+
+    <!-- Metode Pembayaran -->
+    <div class="mb-4">
+        <h5 class="fw-bold mb-3"><i class="fas fa-credit-card text-primary me-2"></i>Pilih Metode Pembayaran</h5>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="metode_pembayaran" id="transfer" value="transfer" checked>
+            <label class="form-check-label" for="transfer">
+                Transfer Bank
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="metode_pembayaran" id="ewallet" value="ewallet">
+            <label class="form-check-label" for="ewallet">
+                E-Wallet (OVO, GoPay, dll)
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="metode_pembayaran" id="cod" value="cod">
+            <label class="form-check-label" for="cod">
+                Cash
+            </label>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-booking w-100 mt-3">
+        <i class="fas fa-check-circle me-2"></i>Konfirmasi Booking
+    </button>
+</form>
+
             </div>
         </div>
     </div>

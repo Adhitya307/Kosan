@@ -7,7 +7,77 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="<?= base_url('/css/dashboard.css') ?>" />
-    <!-- Jangan pakai link untuk JS -->
+
+<style>
+    /* WA Floating Button */
+    #wa-floating {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 999;
+        text-align: right;
+    }
+
+    #wa-button {
+        background-color: #25D366;
+        border: none;
+        border-radius: 50%;
+        padding: 15px;
+        font-size: 22px;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        transition: background 0.3s;
+    }
+
+    #wa-button:hover {
+        background-color: #1ebc59;
+    }
+
+    #wa-info {
+        background-color: white;
+        color: #333;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+        margin-top: 8px;
+
+        width: 220px;
+        font-size: 14px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    #wa-info p {
+        margin: 8px 0;
+        line-height: 1.4;
+    }
+
+    #wa-info a {
+        color: #25D366;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #wa-info a:hover {
+        text-decoration: underline;
+    }
+
+    #wa-info.hidden {
+        display: none;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
 </head>
 <body>
 
@@ -78,8 +148,6 @@ if (is_array($fotos) && count($fotos) > 0):
 <?php else: ?>
     <img src="https://via.placeholder.com/400x300?text=Kamar+Kosan" alt="Foto Kamar" class="kamar-img" />
 <?php endif; ?>
-
-
                         <div class="kamar-details">
                             <h4>Kamar <?= esc($k['nomor_kamar']) ?></h4>
                             <div class="kamar-meta">
@@ -101,8 +169,36 @@ if (is_array($fotos) && count($fotos) > 0):
     <?php endif; ?>
 </div>
 
-<!-- Letakkan script JS di bawah sebelum penutup body -->
-<script src="<?= base_url('js/dashboard.js') ?>"></script>
+<!-- WA Floating Button dan Info Panel -->
+<!-- WA Floating Button dan Info Panel -->
+<div id="wa-floating">
+    <button id="wa-button" type="button">
+        <i class="fas fa-address-book"></i> <!-- GANTI INI -->
+    </button>
+    <div id="wa-info" class="hidden">
+        <p><strong>WhatsApp:</strong><br>0881-0230-82302</p>
+        <p><strong>Instagram:</strong><br>@kosan.kita</p>
+    </div>
+</div>
+
+
+<!-- Script -->
+<script>
+    const waBtn = document.getElementById("wa-button");
+    const waInfo = document.getElementById("wa-info");
+
+    waBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // mencegah klik bubble
+        waInfo.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!waBtn.contains(e.target) && !waInfo.contains(e.target)) {
+            waInfo.classList.add("hidden");
+        }
+    });
+</script>
+
 
 </body>
 </html>

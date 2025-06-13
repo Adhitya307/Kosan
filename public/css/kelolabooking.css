@@ -1,3 +1,4 @@
+/* ROOT VARIABLES */
 :root {
     --primary: #4361ee;
     --primary-light: #e0e4fc;
@@ -20,6 +21,7 @@
     --transition: all 0.3s ease;
 }
 
+/* CONTAINER */
 .booking-container {
     padding: 2rem;
     max-width: 1200px;
@@ -37,6 +39,7 @@
     margin-bottom: 0.5rem;
 }
 
+/* TABLE STYLING */
 .booking-table-container {
     background: var(--white);
     border-radius: var(--radius-lg);
@@ -78,6 +81,7 @@
     background-color: var(--light-gray);
 }
 
+/* DROPDOWN */
 .status-dropdown {
     padding: 0.5rem 1rem;
     border-radius: var(--radius-sm);
@@ -119,36 +123,52 @@
     .booking-table-container {
         overflow-x: auto;
     }
-    
+
     #booking-table {
         min-width: 700px;
     }
-    
+
     .booking-header h1 {
         font-size: 1.5rem;
     }
 }
 
-/* Toast notification */
+/* STATUS BACKGROUND */
+.status-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* TOAST NOTIFICATION (TOP CENTER FIXED) */
 .toast-notification {
     position: fixed;
     top: 20px;
-    right: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     background: var(--success);
     color: white;
     padding: 1rem 1.5rem;
     border-radius: var(--radius-sm);
     box-shadow: var(--shadow-lg);
-    transform: translateX(150%);
-    transition: transform 0.3s ease;
     z-index: 1000;
-    display: flex;
+    display: none;
     align-items: center;
     gap: 0.5rem;
+    transition: var(--transition);
 }
 
 .toast-notification.show {
-    transform: translateX(0);
+    display: flex;
 }
 
 .toast-notification.error {

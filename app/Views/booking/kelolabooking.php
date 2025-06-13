@@ -16,7 +16,10 @@
                     <th>ID Booking</th>
                     <th>Nama</th>
                     <th>Kamar</th>
-                    <th>Status</th>
+                    <th>Status Booking</th>
+                    <th>Status Pembayaran</th>
+                    <th>Metode Pembayaran</th>
+                    <th>Bukti Pembayaran</th>
                     <th>Tanggal Booking</th>
                 </tr>
             </thead>
@@ -38,13 +41,22 @@
                         <td><?= esc($booking['nama']) ?></td>
                         <td><?= esc($kamarNama) ?></td>
                         <td>
-                            <select class="status-dropdown" data-id="<?= $booking['id_booking'] ?>">
+                            <select class="status-dropdown <?= strtolower($booking['status']) ?>" data-id="<?= $booking['id_booking'] ?>">
                                 <?php foreach ($statusOptions as $status): ?>
                                     <option value="<?= $status ?>" <?= $booking['status'] === $status ? 'selected' : '' ?>>
                                         <?= $status ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
+                        </td>
+                        <td><?= esc($booking['status_pembayaran'] ?? '-') ?></td>
+                        <td><?= esc($booking['metode_pembayaran'] ?? '-') ?></td>
+                        <td>
+                            <?php if (!empty($booking['bukti_pembayaran'])): ?>
+                                <a href="<?= base_url('uploads/bukti/' . $booking['bukti_pembayaran']) ?>" target="_blank">Lihat Bukti</a>
+                            <?php else: ?>
+                                <em>Belum Upload</em>
+                            <?php endif; ?>
                         </td>
                         <td><?= date('d M Y', strtotime($booking['tanggal_booking'])) ?></td>
                     </tr>
@@ -85,10 +97,8 @@ document.querySelectorAll('.status-dropdown').forEach(function(dropdown){
                 toastMessage.textContent = 'Status berhasil diubah!';
                 toast.className = 'toast-notification show';
                 
-                // Update dropdown color based on status
-                const dropdown = document.querySelector(`.status-dropdown[data-id="${idBooking}"]`);
+                // Update warna dropdown
                 dropdown.className = 'status-dropdown';
-                
                 if(newStatus === 'Lunas') {
                     dropdown.classList.add('status-success');
                 } else if(newStatus === 'Dibatalkan') {
@@ -100,8 +110,7 @@ document.querySelectorAll('.status-dropdown').forEach(function(dropdown){
                 toastMessage.textContent = 'Gagal mengubah status!';
                 toast.className = 'toast-notification show error';
             }
-            
-            // Hide toast after 3 seconds
+
             setTimeout(() => {
                 toast.className = 'toast-notification';
             }, 3000);
