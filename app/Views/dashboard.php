@@ -108,11 +108,6 @@
                     <h3>Data Booking</h3>
                     <p>Kelola Booking penyewaan</p>
                 </a>
-                <a href="<?= base_url('admin') ?>" class="menu-item">
-                    <i class="fas fa-user-shield"></i>
-                    <h3>Data Admin</h3>
-                    <p>Kelola administrator sistem</p>
-                </a>
                 <a href="<?= base_url('customer') ?>" class="menu-item">
                     <i class="fas fa-users"></i>
                     <h3>Data Customer</h3>

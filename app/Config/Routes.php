@@ -59,3 +59,5 @@ $routes->post('transaksi/store', 'TransaksiController::store');
 $routes->get('transaksi/sukses', 'TransaksiController::sukses');
 
 $routes->post('transaksi/upload_bukti', 'TransaksiController::upload_bukti');
+
+$routes->post('customer/delete/(:num)', 'Customer::delete/$1');
