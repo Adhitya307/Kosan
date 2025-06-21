@@ -166,14 +166,11 @@
       const value = passwordInput.value;
       let strength = 0;
 
-    // Validasi aturan password
-    const lengthValid = value.length >= 8;
-    const uppercaseValid = /[A-Z]/.test(value);
-    const lowercaseValid = /[a-z]/.test(value);
-    const numberValid = /[0-9]/.test(value);
-    // Simbol harus ada, dan tidak mengandung '#'
-    const symbolValid = /[!@\$%^&*()_+{}\[\]:;"'<>?,./\\~`-]/.test(value) && !/#/.test(value);
-
+      const lengthValid = value.length >= 8;
+      const uppercaseValid = /[A-Z]/.test(value);
+      const lowercaseValid = /[a-z]/.test(value);
+      const numberValid = /[0-9]/.test(value);
+      const symbolValid = /[^a-zA-Z0-9\s#]/.test(value);  // simbol selain # harus ada
 
       updateRequirement('length', lengthValid);
       updateRequirement('uppercase', uppercaseValid);
@@ -212,7 +209,7 @@
       const pass = document.getElementById('password').value;
       const confirm = document.getElementById('konfirmasi').value;
 
-      const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s#]).{8,}$/;
+      const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9\s#]).{8,}$/;
 
       if (!passRegex.test(pass)) {
         Swal.fire({
